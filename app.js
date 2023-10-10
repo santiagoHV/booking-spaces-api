@@ -1,7 +1,6 @@
 const express = require('express')
 const cors = require('cors')
-const app = express()
-const bodyParser = require('body-parser')
+const routerApi = require('./src/infrastructure/express/routes')
 const e = require('express')
 
 const createApp = () => {
@@ -14,6 +13,8 @@ const createApp = () => {
     app.get('/', (req, res) => {
         res.send('Hello World!')
     })
+
+    routerApi(app)
 
     return app
 }
