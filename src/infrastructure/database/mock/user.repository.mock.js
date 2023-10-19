@@ -1,7 +1,16 @@
+const User = require('../../../domain/entities/user.entity')
+
 class UserRepositoryMock {
     constructor() {
-        this.users = []
-        this.nextId = 1
+        this.users = [
+            new User({
+                id: 1,
+                name: 'John Doe',
+                email: 'jhon@doe.com',
+                password: '123456',
+            }),
+        ]
+        this.nextId = 2
     }
 
     async create(user){
@@ -11,7 +20,8 @@ class UserRepositoryMock {
     }
 
     async findById(id){
-        return this.users.find(user => user.id === id)
+        const intId = parseInt(id)
+        return this.users.find(user => user.id === intId)
     }
 }
 
