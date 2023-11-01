@@ -18,10 +18,18 @@ When("Envio un POST request a {string}", async(url) => {
         .send(userData)
 })
 
-Then('El response status code es 201', () => {
-    expect(response.statusCode).to.equal(201)
+When('Envio un GET request a {string}', async(url) => {
+    const app = createApp()
+
+    response = await request(app)
+        .get(url)
 })
 
-Then('La respuesta debe contener un user ID', () => {
-    expect(response.body).toHaveProperty('id')
+Then('El response status code es {string}', (statusCode) => {
+    expect(String(response.statusCode)).to.equal(statusCode)
 })
+
+Then('La respuesta debe contener el campo {string}', (property) => {
+    expect(response.body).to.have.property(property)
+})
+

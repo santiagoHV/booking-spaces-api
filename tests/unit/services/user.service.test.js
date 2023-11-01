@@ -1,4 +1,8 @@
-const service = require('../../../src/application/services/user.service');
+const UserService = require('../../../src/application/services/user.service');
+const MockUserRepository = require('../../../src/infrastructure/database/mock/user.repository.mock');
+
+const userRepository = new MockUserRepository();
+const service = new UserService(userRepository);
 
 describe('User service', () => {
     describe('When create method is called', () => {
