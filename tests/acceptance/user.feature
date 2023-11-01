@@ -1,6 +1,5 @@
 @iniciar-app
 Feature: Creación de usuarios
-
     Scenario: Crear un nuevo usuario
         Given Tengo los siguientes datos de usuario:
             | Name | Email | Password |
