@@ -13,13 +13,13 @@ class UserRepositoryMock {
         this.nextId = 2
     }
 
-    async create(user){
-        const newUser = { ...user, id: this.nextId++ }
+    async create(user) {
+        const newUser = {...user, id: this.nextId++ }
         this.users.push(newUser)
         return newUser
     }
 
-    async findById(id){
+    async findById(id) {
         const intId = parseInt(id)
         return this.users.find(user => user.id === intId)
     }

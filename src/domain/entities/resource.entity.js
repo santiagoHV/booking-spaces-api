@@ -1,12 +1,13 @@
 class Resource {
-    constructor({ id, name, schedule, type, maxOcupation, stock, description, details }){
+    constructor({ id, name, description, type, stock, details, avaliabilitySpaces }) {
         this.id = id;
         this.name = name;
-        this.schedule = schedule;
-        this.type = type;
-        this.maxOcupation = maxOcupation;
-        this.stock = stock;
         this.description = description;
+        this.type = type;
+        this.stock = stock;
         this.details = details;
+        this.avaliabilitySpaces = avaliabilitySpaces;
     }
 }
+
+module.exports = Resource;
