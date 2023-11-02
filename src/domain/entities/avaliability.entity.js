@@ -1,9 +1,9 @@
 class Avaliability {
-    constructor({id, startTime, endTime, date, type}){
+    constructor({id, startTime, endTime, day, type}){
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.date = date;
+        this.day = day;
         this.type = type;
     }
 }
