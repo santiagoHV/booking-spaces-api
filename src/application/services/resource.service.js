@@ -1,42 +1,65 @@
 class ResourceService {
-    constructor(resourceRepository, avaliabilityRepository) {
+    constructor(resourceRepository, availabilityRepository) {
         this.resourceRepository = resourceRepository;
-        this.avaliabilityRepository = avaliabilityRepository;
+        this.availabilityRepository = availabilityRepository;
     }
 
-    async getAll() {
+    getAll = async () => {
         return await this.resourceRepository.getAll();
     }
 
-    async get(id) {
+    get = async (id) => {
         return await this.resourceRepository.get(id);
     }
 
-    async create(resource) {
+    create = async (resource) => {
         return await this.resourceRepository.create(resource);
     }
 
-    async update(id, resource) {
+    update = async (id, resource) => {
         return await this.resourceRepository.update(id, resource);
     }
 
-    async delete(id) {
+    delete = async (id) => {
         return await this.resourceRepository.delete(id);
     }
 
-    async getAvaliability(id) {
-        return await this.avaliabilityRepository.getAllByResourceId(id);
+    getAvailability = async (id) => {
+        const resource = await this.get(id);
+        const availabilities = await this.availabilityRepository.getAllByResourceId(id);
+
+        return {
+            ...resource,
+            availabilities
+        }
     }
 
-    async createAvaliability(avaliability) {
-        return await this.avaliabilityRepository.create(avaliability);
+    createAvailability = async (id, availability) => {
+        const newAvailability = await this.availabilityRepository.create({...availability, resourceId: id})
+        return newAvailability
     }
 
-    async updateAvaliability(id, avaliability) {
-        return await this.avaliabilityRepository.update(id, avaliability);
+    createAvailabilityBulk = async (id, availabilities) => {
+        const resource = await this.resourceRepository.get(`${id}`);
+
+        const newAvailabilities = Promise.all(availabilities.map(async availability => {
+            const newAvailability = await this.availabilityRepository.create({...availability, resourceId: id})
+            return newAvailability
+        }));
+
+        return {
+            ...resource,
+            availabilities: await newAvailabilities,
+        }
     }
 
-    async deleteAvaliability(id) {
-        return await this.avaliabilityRepository.delete(id);
+    updateAvailability = async (id, availability) => {
+        return await this.availabilityRepository.update(id, availability);
+    }
+
+    deleteAvailability = async (id) => {
+        return await this.availabilityRepository.delete(id);
     }
 }
+
+module.exports = ResourceService;

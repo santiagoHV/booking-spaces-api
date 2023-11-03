@@ -2,17 +2,8 @@ const Resource = require('../../../domain/entities/resource.entity');
 
 class ResourceRepositoryMock {
     constructor() {
-        this.resources = [
-            new Resource({
-                id: 1,
-                name: 'Resource 1',
-                description: 'Resource 1 description',
-                type: 'Resource 1 type',
-                stock: 1,
-                details: 'Resource 1 details',
-            }),
-        ]
-        this.nextId = 2
+        this.resources = []
+        this.nextId = 1
     }
 
     async getAll() {
@@ -20,13 +11,13 @@ class ResourceRepositoryMock {
     }
 
     async get(id) {
-        const intId = parseInt(id)
-        return this.resources.find(resource => resource.id === intId)
+        return this.resources.find(resource => resource.id === id)
     }
 
     async create(resource) {
-        const newResource = {...resource, id: this.nextId++ }
+        const newResource = new Resource({...resource, id: `${this.nextId++}` })
         this.resources.push(newResource)
+
         return newResource
     }
 
@@ -44,3 +35,5 @@ class ResourceRepositoryMock {
         return true
     }
 }
+
+module.exports = ResourceRepositoryMock;
