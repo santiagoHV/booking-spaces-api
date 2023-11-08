@@ -3,13 +3,22 @@ class BookingController {
         this.bookingService = bookingService
     }
 
-    async createBooking(req, res) {
-        try {
-            const booking = await this.bookingService.createBooking(req.body)
+    createBooking = async (req, res) => {
+        // try {
+            const {startTime, endTime, date, observations, userId, resourceId} = req.body
+
+            const booking = await this.bookingService.createBooking({
+                startTime,
+                endTime,
+                date: new Date(date),
+                observations,
+                userId,
+                resourceId
+            })
             res.status(201).json(booking)
-        } catch (error) {
-            res.status(500).json(error)
-        }
+        // } catch (error) {
+        //     res.status(500).json(error)
+        // }
     }
 
     async getBookingById(req, res) {

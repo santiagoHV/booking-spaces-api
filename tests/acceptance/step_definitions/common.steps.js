@@ -12,6 +12,14 @@ When("Envio un POST request a {string}", async(url) => {
         .send(data)
 })
 
+When("Envio un PUT request a {string}", async(url) => {
+    const app = createApp()
+
+    response = await request(app)
+        .put(url)
+        .send(data)
+})
+
 When('Envio un GET request a {string}', async(url) => {
     const app = createApp()
 
