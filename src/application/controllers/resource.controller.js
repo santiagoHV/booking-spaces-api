@@ -1,9 +1,9 @@
 class ResourceController {
-    constructor({ resourceService }) {
+    constructor( resourceService ) {
         this.resourceService = resourceService;
     }
 
-    async getResources(req, res) {
+    getResources = async (req, res) => {
         try {
             const resources = await this.resourceService.getAll();
             return res.status(200).json(resources);
@@ -12,27 +12,39 @@ class ResourceController {
         }
     }
 
-    async getResource(req, res) {
+    getResource = async (req, res) => {
         try {
             const { id } = req.params;
             const resource = await this.resourceService.get(id);
+
+            if(resource === null || resource === undefined){
+                return res.status(404).json({message: 'Resource not found'});
+            }
+
             return res.status(200).json(resource);
         } catch (error) {
             return res.status(500).json(error);
         }
     }
 
-    async createResource(req, res) {
+    createResource = async (req, res) => {
         try {
-            const resource = req.body;
-            const newResource = await this.resourceService.create(resource);
+            const {name, description, type, stock, details} = req.body;
+            const newResource = await this.resourceService.create({
+                name,
+                description,
+                type,
+                stock,
+                details
+            })
             return res.status(201).json(newResource);
         } catch (error) {
+            console.log(error);
             return res.status(500).json(error);
         }
     }
 
-    async updateResource(req, res) {
+    updateResource = async (req, res) => {
         try {
             const { id } = req.params;
             const resource = req.body;
@@ -43,7 +55,7 @@ class ResourceController {
         }
     }
 
-    async deleteResource(req, res) {
+    deleteResource = async (req, res) => {
         try {
             const { id } = req.params;
             await this.resourceService.delete(id);
@@ -53,46 +65,61 @@ class ResourceController {
         }
     }
 
-    async getAvaliability(req, res) {
+    createAvailability = async (req, res) => {
         try {
             const { id } = req.params;
-            const avaliability = await this.resourceService.getAvaliability(id);
-            return res.status(200).json(avaliability);
+            const availability = req.body;
+            const newAvailability = await this.resourceService.createAvailability(id, availability);
+            return res.status(201).json(newAvailability);
         } catch (error) {
             return res.status(500).json(error);
         }
     }
 
-    async createAvaliability(req, res) {
+    createAvailabilityBulk = async (req, res) => {
         try {
             const { id } = req.params;
-            const avaliability = req.body;
-            const newAvaliability = await this.resourceService.createAvaliability(id, avaliability);
-            return res.status(201).json(newAvaliability);
+            const availabilities = req.body;
+            const resourceWIthAvailabilities = await this.resourceService.createAvailabilityBulk(id, availabilities);
+            
+            return res.status(201).json(resourceWIthAvailabilities);
         } catch (error) {
             return res.status(500).json(error);
         }
     }
 
-    async updateAvaliability(req, res) {
+    updateAvailability = async (req, res) => {
         try {
             const { id } = req.params;
-            const avaliability = req.body;
-            const updatedAvaliability = await this.resourceService.updateAvaliability(id, avaliability);
-            return res.status(200).json(updatedAvaliability);
+            const availability = req.body;
+            const updatedAvailability = await this.resourceService.updateAvailability(id, availability);
+            return res.status(200).json(updatedAvailability);
         } catch (error) {
             return res.status(500).json(error);
         }
     }
 
-    async deleteAvaliability(req, res) {
+    deleteAvailability = async (req, res) => {
         try {
             const { id } = req.params;
-            await this.resourceService.deleteAvaliability(id);
+            await this.resourceService.deleteAvailability(id);
             return res.sendStatus(204);
         } catch (error) {
             return res.status(500).json(error);
         }
+    }
+
+    getAvailabilityByDate = async (req, res) => {
+        // try {
+            let { id, date } = req.params;
+
+            const newDate = new Date(date);
+            console.log(newDate.getDay(), date);
+            const availability = await this.resourceService.getAvailabilityByDate(id, newDate);
+            return res.status(200).json(availability);
+        // } catch (error) {
+        //     return res.status(500).json(error);
+        // }
     }
 }
 

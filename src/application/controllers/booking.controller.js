@@ -3,36 +3,18 @@ class BookingController {
         this.bookingService = bookingService
     }
 
-    async getAllBookings(req, res) {
+    createBooking = async(req, res) => {
         try {
-            const bookings = await this.bookingService.getAllBookings()
-            res.status(200).json(bookings)
-        } catch (error) {
-            res.status(500).json(error)
-        }
-    }
+            const { startTime, endTime, date, observations, userId, resourceId } = req.body
 
-    async getAllOpenBookings(req, res) {
-        try {
-            const bookings = await this.bookingService.getAllOpenBookings()
-            res.status(200).json(bookings)
-        } catch (error) {
-            res.status(500).json(error)
-        }
-    }
-
-    async getAllClosedBookings(req, res) {
-        try {
-            const bookings = await this.bookingService.getAllClosedBookings()
-            res.status(200).json(bookings)
-        } catch (error) {
-            res.status(500).json(error)
-        }
-    }
-
-    async createBooking(req, res) {
-        try {
-            const booking = await this.bookingService.createBooking(req.body)
+            const booking = await this.bookingService.createBooking({
+                startTime,
+                endTime,
+                date: new Date(date),
+                observations,
+                userId,
+                resourceId
+            })
             res.status(201).json(booking)
         } catch (error) {
             res.status(500).json(error)
@@ -66,18 +48,11 @@ class BookingController {
         }
     }
 
-    async getClosedBookingsByUserId(req, res) {
+    getBookingByResourceIdAndDate = async(req, res) => {
         try {
-            const booking = await this.bookingService.getClosedBookingsByUserId(req.params.userId)
-            res.status(200).json(booking)
-        } catch (error) {
-            res.status(500).json(error)
-        }
-    }
-
-    async getOpenBookingsByUserId(req, res) {
-        try {
-            const booking = await this.bookingService.getOpenBookingsByUserId(req.params.userId)
+            const date = new Date(req.params.date)
+            const id = req.params.resourceId
+            const booking = await this.bookingService.getBookingByResourceIdAndDate(id, date)
             res.status(200).json(booking)
         } catch (error) {
             res.status(500).json(error)
