@@ -3,6 +3,30 @@ class BookingService {
         this.userRepository = userRepository
     }
 
+    async getAllBookings() {
+        try {
+            return ''
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getAllOpenBookings() {
+        try {
+            return ''
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getAllClosedBookings() {
+        try {
+            return ''
+        } catch (error) {
+            throw error
+        }
+    }
+
     async createBooking(bookingData) {
         try {
             const booking = new Booking(bookingData)
@@ -20,9 +44,33 @@ class BookingService {
         }
     }
 
+    async closeBooking(bookingId) {
+        try {
+            return ''
+        } catch (error) {
+            throw error
+        }
+    }
+
     async getBookingByUserId(userId) {
         try {
             return await this.bookingRepository.findByUserId(userId)
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getClosedBookingsByUserId(userId) {
+        try {
+            return ''
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async getOpenBookingsByUserId(userId) {
+        try {
+            return ''
         } catch (error) {
             throw error
         }
