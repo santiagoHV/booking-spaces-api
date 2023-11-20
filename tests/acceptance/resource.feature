@@ -26,10 +26,17 @@ Feature: Gestión de recursos y disponibilidad
         And El id en la respuesta es '1'
         And El campo 'name' en la respuesta es 'Salón 1'
         And El campo 'availabilities' existe
-        
-    Scenario: Obtener disponibilidad de un recurso un día
 
     Scenario: Obtener todos los recursos
+
+    Scenario: Obtener un recurso
+        When Envio un GET request a '/api/v1/resources/1'
+        Then El response status code es '200'
+        Then El campo 'name' en la respuesta es 'Salón 1'
+        Then El campo 'description' en la respuesta es 'Descripción del salon 1'
+        Then El campo 'type' en la respuesta es 'Space'
+        Then El campo 'stock' en la respuesta es '1'
+        Then El campo 'details' en la respuesta es 'Detalles del salon 1'
 
     Scenario: Actualizar un recurso
         Given Tengo los siguientes datos del recurso
@@ -43,6 +50,6 @@ Feature: Gestión de recursos y disponibilidad
         Then El campo 'stock' en la respuesta es '1'
         Then El campo 'details' en la respuesta es 'Detalles del salon 1'
 
-    Scenario: Obtener un recurso
-
-    Scenario: Actualizar horario de disponibilidad de un recurso
+    Scenario: Borrar recurso
+        When Envio un DELETE request a '/api/v1/resources/1'
+        Then El response status code es '204'

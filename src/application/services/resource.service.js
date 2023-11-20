@@ -1,7 +1,13 @@
 class ResourceService {
-    constructor(resourceRepository, availabilityRepository) {
+    constructor(resourceRepository,
+        availabilityRepository, 
+        bookingRepository = null,
+        availabilityService = null
+        ) {
         this.resourceRepository = resourceRepository;
         this.availabilityRepository = availabilityRepository;
+        this.bookingRepository = bookingRepository;
+        this.availabilityService = availabilityService;
     }
 
     getAll = async () => {
@@ -22,16 +28,6 @@ class ResourceService {
 
     delete = async (id) => {
         return await this.resourceRepository.delete(id);
-    }
-
-    getAvailability = async (id) => {
-        const resource = await this.get(id);
-        const availabilities = await this.availabilityRepository.getAllByResourceId(id);
-
-        return {
-            ...resource,
-            availabilities
-        }
     }
 
     createAvailability = async (id, availability) => {
@@ -60,6 +56,31 @@ class ResourceService {
     deleteAvailability = async (id) => {
         return await this.availabilityRepository.delete(id);
     }
+
+    getAvailabilityByDate = async (id, date) => {
+        const resource = await this.resourceRepository.get(id);
+        const day = date.getDay();
+        const availabilityBlocks = await this.availabilityRepository.findByResourceIdAndDay(id, day);
+        
+        const bookingsInDay = await this.bookingRepository.findByResourceIdAndDate(id, date);
+    
+        const dayAvailabilities = availabilityBlocks.map(availability => {
+            const isAvailable = this.availabilityService.isBlockAvailableInDay(availability, bookingsInDay)
+            return {
+                ...availability,
+                isAvailable
+            }
+        })
+    
+        
+
+        return {
+            ...resource,
+            dayAvailabilities: dayAvailabilities,
+        }
+    }
+
+    
 }
 
 module.exports = ResourceService;

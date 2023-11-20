@@ -27,6 +27,13 @@ When('Envio un GET request a {string}', async(url) => {
         .get(url)
 })
 
+When('Envio un DELETE request a {string}', async(url) => {
+    const app = createApp()
+
+    response = await request(app)
+        .delete(url)
+})
+
 Then('El response status code es {string}', (statusCode) => {
     expect(String(response.statusCode)).to.equal(statusCode)
 })

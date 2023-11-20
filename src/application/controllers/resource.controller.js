@@ -65,16 +65,6 @@ class ResourceController {
         }
     }
 
-    getAvailability = async (req, res) =>{
-        try {
-            const { id } = req.params;
-            const availability = await this.resourceService.getAvailability(id);
-            return res.status(200).json(availability);
-        } catch (error) {
-            return res.status(500).json(error);
-        }
-    }
-
     createAvailability = async (req, res) => {
         try {
             const { id } = req.params;
@@ -117,6 +107,19 @@ class ResourceController {
         } catch (error) {
             return res.status(500).json(error);
         }
+    }
+
+    getAvailabilityByDate = async (req, res) => {
+        // try {
+            let { id, date } = req.params;
+
+            const newDate = new Date(date);
+            console.log(newDate.getDay(), date);
+            const availability = await this.resourceService.getAvailabilityByDate(id, newDate);
+            return res.status(200).json(availability);
+        // } catch (error) {
+        //     return res.status(500).json(error);
+        // }
     }
 }
 

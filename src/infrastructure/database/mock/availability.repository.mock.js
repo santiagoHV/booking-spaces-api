@@ -7,11 +7,32 @@ class AvailabilityRepositoryMock {
                 id: 1,
                 startTime: '10:00',
                 endTime: '12:00',
-                day: '2021-07-15',
+                day: 0,
+                resourceId: 1,
+            }),
+            new Availability({
+                id: 2,
+                startTime: '14:00',
+                endTime: '16:00',
+                day: 0,
+                resourceId: 1,
+            }),
+            new Availability({
+                id: 3,
+                startTime: '10:00',
+                endTime: '12:00',
+                day: 2,
+                resourceId: 1,
+            }),
+            new Availability({
+                id: 4,
+                startTime: '14:00',
+                endTime: '16:00',
+                day: 2,
                 resourceId: 1,
             }),
         ]
-        this.nextId = 2
+        this.nextId = 5
     }
 
     async create(availability) {
@@ -42,6 +63,13 @@ class AvailabilityRepositoryMock {
         const index = this.availabilities.findIndex(availability => availability.id === intId)
         this.availabilities.splice(index, 1)
         return true
+    }
+
+    async findByResourceIdAndDay(resourceId, day) {
+        const intResourceId = parseInt(resourceId)
+        return this.availabilities.filter(availability => {
+            return availability.resourceId === intResourceId && availability.day === day
+        })
     }
 }
 

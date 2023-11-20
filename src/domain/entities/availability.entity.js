@@ -6,6 +6,8 @@ class Availability {
         this.day = day;
         this.resourceId = resourceId;
     }
+
+
 }
 
 module.exports = Availability;

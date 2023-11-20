@@ -1,13 +1,29 @@
 const Booking = require('../../domain/entities/booking.entity')
 
 class BookingService {
-    constructor(bookingRepository, userRepository = null) {
+    constructor(
+        bookingRepository, 
+        userRepository,
+        availabilityService
+        ) {
         this.bookingRepository = bookingRepository
-        this.userRepository = userRepository
+        this.userRepository = userRepository,
+        this.availabilityService = availabilityService
     }
 
-    async createBooking(bookingData) {
+    createBooking = async (bookingData) => {
         try {
+            const isAValidBlock = await this.availabilityService.isAValidBlock(
+                bookingData.startTime,
+                bookingData.endTime,
+                bookingData.date.getDay(),
+                bookingData.resourceId
+            )
+
+            if(!isAValidBlock){
+                throw new Error('Invalid block')
+            }
+
             const isAvaliable = await this.isResourceAvaliable(
                 bookingData.resourceId, 
                 bookingData.date,
@@ -20,8 +36,11 @@ class BookingService {
 
             const booking = new Booking({
                 ...bookingData,
-                status: 'active'
+                status: 'active',
+                resourceId: parseInt(bookingData.resourceId),
+                userId: parseInt(bookingData.userId),
             })
+            
             return await this.bookingRepository.create(booking)
         } catch (error) {
             throw error
@@ -44,18 +63,25 @@ class BookingService {
         }
     }
 
+    async getBookingByResourceIdAndDate(resourceId, date) {
+        try {
+            return await this.bookingRepository.findByResourceIdAndDate(resourceId, date)
+        } catch (error) {
+            throw error
+        }
+    }
+
     isResourceAvaliable = async (resourceId, date, startTime, endTime) => {
         try {
-            console.log(this.bookingRepository)
             const bookings = await this.bookingRepository.findByResourceIdAndDate(resourceId, date)
-            const bookingsInTimeRange = bookings.filter(booking => {
-                const bookingStartTime = new Date(booking.startTime)
-                const bookingEndTime = new Date(booking.endTime)
-                const startTimeInRange = bookingStartTime < startTime || bookingStartTime > endTime
-                const endTimeInRange = bookingEndTime < startTime || bookingEndTime > endTime
-                return startTimeInRange || endTimeInRange
-            }) 
-            return bookingsInTimeRange.length === 0
+            
+            return this.availabilityService.isBlockAvailableInDay(
+                {
+                    startTime,
+                    endTime
+                }, 
+                bookings
+            )	
         } catch (error) {
             throw error
         }

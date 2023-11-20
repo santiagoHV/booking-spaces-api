@@ -1,9 +1,21 @@
 const Resource = require('../../../domain/entities/resource.entity');
+const AvailabilityRepositoryMock = require('./availability.repository.mock');
 
 class ResourceRepositoryMock {
     constructor() {
-        this.resources = []
-        this.nextId = 1
+        this.resources = [
+            new Resource({ 
+                id: '1',
+                name: 'Recurso 1', 
+                description: 'Descripcion 1',
+                type: 'Space',
+                stock: 1,
+                details: 'Tiene video beam'
+            }),
+        ]
+        this.nextId = 2
+
+        this.availabilityRepositoryMock = new AvailabilityRepositoryMock();
     }
 
     async getAll() {
@@ -11,7 +23,17 @@ class ResourceRepositoryMock {
     }
 
     async get(id) {
-        return this.resources.find(resource => resource.id === id)
+        const resource = this.resources.find(resource => resource.id === id)
+
+        if (!resource) {
+            return null
+        }
+        const availabilities = await this.availabilityRepositoryMock.getAllByResourceId(id);
+
+        return {
+            ...resource,
+            availabilities
+        }
     }
 
     async create(resource) {

@@ -5,10 +5,11 @@ class UserRepositoryMock {
         this.bookings = [
             new Booking({
                 id: 1,
-                startTime: '2021-10-10T10:00:00.000Z',
-                endTime: '2021-10-10T11:00:00.000Z',
+                startTime: '10:00',
+                endTime: '12:00',
+                date: new Date('2025-01-06'),
                 observations: 'Observations',
-                status: 'pending',
+                status: 'confirmed',
                 userId: 1,
                 resourceId: 1,
             }),
@@ -17,9 +18,11 @@ class UserRepositoryMock {
     }
 
     async create(booking) {
-        const newBooking = {...booking, id: this.nextId++ }
-        this.bookings.push(newBooking)
-        return newBooking
+        booking.id = this.nextId++
+        this.bookings.push(booking)
+
+        console.log(this.bookings)
+        return booking
     }
 
     async findById(id) {
@@ -34,10 +37,10 @@ class UserRepositoryMock {
 
     findByResourceIdAndDate = async (resourceId, date) => {
         const intId = parseInt(resourceId)
-        const dateToCompare = new Date(date)
+        const dateToCompare = date
         return this.bookings.filter(booking => {
-            const bookingDate = new Date(booking.date)
-            return booking.resourceId === intId && bookingDate.getTime() === dateToCompare.getTime()
+            console.log(booking)
+            return booking.resourceId === intId && booking.date.getUTCDate() === dateToCompare.getUTCDate()
         })
     }
 }
