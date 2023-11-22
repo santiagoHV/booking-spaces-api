@@ -1,3 +1,5 @@
+const boom = require('@hapi/boom')
+
 const Booking = require('../../domain/entities/booking.entity')
 
 class BookingService {
@@ -12,7 +14,6 @@ class BookingService {
     }
 
     createBooking = async(bookingData) => {
-        try {
             const isAValidBlock = await this.availabilityService.isAValidBlock(
                 bookingData.startTime,
                 bookingData.endTime,
@@ -21,7 +22,7 @@ class BookingService {
             )
 
             if (!isAValidBlock) {
-                throw new Error('Invalid block')
+                throw boom.badRequest('Invalid block')
             }
 
             const isAvaliable = await this.isResourceAvaliable(
@@ -31,7 +32,7 @@ class BookingService {
                 bookingData.endTime)
 
             if (!isAvaliable) {
-                throw new Error('Resource is not avaliable')
+                throw boom.badRequest('Resource not available')
             }
 
             const booking = new Booking({
@@ -42,9 +43,6 @@ class BookingService {
             })
 
             return await this.bookingRepository.create(booking)
-        } catch (error) {
-            throw error
-        }
     }
 
     async getBookingById(bookingId) {

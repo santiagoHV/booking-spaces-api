@@ -1,9 +1,11 @@
+const boom = require('@hapi/boom')
+
 class BookingController {
     constructor(bookingService) {
         this.bookingService = bookingService
     }
 
-    createBooking = async(req, res) => {
+    createBooking = async(req, res, next) => {
         try {
             const { startTime, endTime, date, observations, userId, resourceId } = req.body
 
@@ -17,7 +19,7 @@ class BookingController {
             })
             res.status(201).json(booking)
         } catch (error) {
-            res.status(500).json(error)
+            next(error)
         }
     }
 

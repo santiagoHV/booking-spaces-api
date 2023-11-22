@@ -20,8 +20,6 @@ class UserRepositoryMock {
     async create(booking) {
         booking.id = this.nextId++
         this.bookings.push(booking)
-
-        console.log(this.bookings)
         return booking
     }
 
@@ -39,7 +37,6 @@ class UserRepositoryMock {
         const intId = parseInt(resourceId)
         const dateToCompare = date
         return this.bookings.filter(booking => {
-            console.log(booking)
             return booking.resourceId === intId && booking.date.getUTCDate() === dateToCompare.getUTCDate()
         })
     }

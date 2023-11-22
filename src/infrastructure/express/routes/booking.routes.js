@@ -23,9 +23,9 @@ const bookingService = new BookingService(
     availabilityService);
 const bookingController = new BookingController(bookingService);
 
-router.get('/', bookingController.getAllBookings);
-router.get('/open', bookingController.getAllOpenBookings);
-router.get('/closed', bookingController.getAllClosedBookings);
+// router.get('/', bookingController.getAllBookings);
+// router.get('/open', bookingController.getAllOpenBookings);
+// router.get('/closed', bookingController.getAllClosedBookings);
 router.post('/', bookingController.createBooking);
 router.get('/:id', bookingController.getBookingById);
 router.post('/:id/close', bookingController.closeBooking);

@@ -1,7 +1,7 @@
 const express = require('express')
 const cors = require('cors')
 const routerApi = require('./src/infrastructure/express/routes')
-const e = require('express')
+const { boomErrorHandler } = require('./src/infrastructure/express/middlewares/errorHandler')
 
 const createApp = () => {
     const app = express()
@@ -15,6 +15,8 @@ const createApp = () => {
     })
 
     routerApi(app)
+
+    app.use(boomErrorHandler)
 
     return app
 }
