@@ -9,7 +9,7 @@ class UserRepositoryMock {
                 endTime: '12:00',
                 date: new Date('2025-01-06'),
                 observations: 'Observations',
-                status: 'confirmed',
+                status: 'active',
                 userId: 1,
                 resourceId: 1,
             }),
@@ -19,7 +19,7 @@ class UserRepositoryMock {
 
     async create(booking) {
         booking.id = this.nextId++
-        this.bookings.push(booking)
+            this.bookings.push(booking)
         return booking
     }
 
@@ -33,7 +33,7 @@ class UserRepositoryMock {
         return this.bookings.filter(booking => booking.userId === intId)
     }
 
-    findByResourceIdAndDate = async (resourceId, date) => {
+    findByResourceIdAndDate = async(resourceId, date) => {
         const intId = parseInt(resourceId)
         const dateToCompare = date
         return this.bookings.filter(booking => {

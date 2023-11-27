@@ -6,6 +6,7 @@ const MockAvailabilityRepository = require('../../../infrastructure/database/moc
 const AvailabilityService = require('../../../application/services/availability.service');
 const BookingService = require('../../../application/services/booking.service');
 const BookingController = require('../../../application/controllers/booking.controller');
+const { verifyToken } = require('../../../application/middlewares/auth.middleware');
 
 const router = express.Router();
 const bookingRepository = new MockBookingRepository();
@@ -26,10 +27,9 @@ const bookingController = new BookingController(bookingService);
 // router.get('/', bookingController.getAllBookings);
 // router.get('/open', bookingController.getAllOpenBookings);
 // router.get('/closed', bookingController.getAllClosedBookings);
-router.post('/', bookingController.createBooking);
+router.post('/', [verifyToken], bookingController.createBooking);
 router.get('/:id', bookingController.getBookingById);
 router.post('/:id/close', bookingController.closeBooking);
 router.get('/user/:userId', bookingController.getBookingByUserId);
 router.get('/:resourceId/:date', bookingController.getBookingByResourceIdAndDate);
-
 module.exports = router;

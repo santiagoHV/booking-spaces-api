@@ -23,6 +23,10 @@ class UserRepositoryMock {
         const intId = parseInt(id)
         return this.users.find(user => user.id === intId)
     }
+
+    async findByEmail(email) {
+        return this.users.find(user => user.email === email)
+    }
 }
 
 module.exports = UserRepositoryMock
