@@ -4,14 +4,21 @@ const router = express.Router();
 const ResourceController = require('../../../application/controllers/resource.controller');
 const ResourceService = require('../../../application/services/resource.service');
 const AvailabilityService = require('../../../application/services/availability.service');
-const MockResourceRepository = require('../../../infrastructure/database/mock/resource.repository.mock');
-const MockAvailabilityRepository = require('../../../infrastructure/database/mock/availability.repository.mock');
-const MockBookingRepository = require('../../../infrastructure/database/mock/booking.repository.mock')
+// const MockResourceRepository = require('../../../infrastructure/database/mock/resource.repository.mock');
+// const MockAvailabilityRepository = require('../../../infrastructure/database/mock/availability.repository.mock');
+// const MockBookingRepository = require('../../../infrastructure/database/mock/booking.repository.mock')
+const ResourceRepository = require('../../../infrastructure/database/sequelize/repositories/resource.repository');
+const AvailabilityRepository = require('../../../infrastructure/database/sequelize/repositories/availability.repository');
+const BookingRepository = require('../../../infrastructure/database/sequelize/repositories/booking.repository');
+
 const { verifyToken } = require('../../../application/middlewares/auth.middleware');
 
-const resourceRepository = new MockResourceRepository();
-const availabilityRepository = new MockAvailabilityRepository();
-const bookingRepository = new MockBookingRepository();
+// const resourceRepository = new MockResourceRepository();
+// const availabilityRepository = new MockAvailabilityRepository();
+// const bookingRepository = new MockBookingRepository();
+const resourceRepository = new ResourceRepository();
+const availabilityRepository = new AvailabilityRepository();
+const bookingRepository = new BookingRepository();
 
 const availabilityService = new AvailabilityService(availabilityRepository, bookingRepository, resourceRepository);
 const resourceService = new ResourceService(resourceRepository, 

@@ -1,18 +1,27 @@
 const express = require('express');
-const MockBookingRepository = require('../../../infrastructure/database/mock/booking.repository.mock');
-const MockUserRepository = require('../../../infrastructure/database/mock/user.repository.mock');
-const MockResourceRepository = require('../../../infrastructure/database/mock/resource.repository.mock');
-const MockAvailabilityRepository = require('../../../infrastructure/database/mock/availability.repository.mock');
+// const MockBookingRepository = require('../../../infrastructure/database/mock/booking.repository.mock');
+// const MockUserRepository = require('../../../infrastructure/database/mock/user.repository.mock');
+// const MockResourceRepository = require('../../../infrastructure/database/mock/resource.repository.mock');
+// const MockAvailabilityRepository = require('../../../infrastructure/database/mock/availability.repository.mock');
+const BookingRepository = require('../../../infrastructure/database/sequelize/repositories/booking.repository');
+const UserRepository = require('../../../infrastructure/database/sequelize/repositories/user.repository');
+const ResourceRepository = require('../../../infrastructure/database/sequelize/repositories/resource.repository');
+const AvailabilityRepository = require('../../../infrastructure/database/sequelize/repositories/availability.repository');
+
 const AvailabilityService = require('../../../application/services/availability.service');
 const BookingService = require('../../../application/services/booking.service');
 const BookingController = require('../../../application/controllers/booking.controller');
 const { verifyToken } = require('../../../application/middlewares/auth.middleware');
 
 const router = express.Router();
-const bookingRepository = new MockBookingRepository();
-const userRepository = new MockUserRepository();
-const resourceRepository = new MockResourceRepository();
-const availabilityRepository = new MockAvailabilityRepository();
+// const bookingRepository = new MockBookingRepository();
+// const userRepository = new MockUserRepository();
+// const resourceRepository = new MockResourceRepository();
+// const availabilityRepository = new MockAvailabilityRepository();
+const bookingRepository = new BookingRepository();
+const userRepository = new UserRepository();
+const resourceRepository = new ResourceRepository();
+const availabilityRepository = new AvailabilityRepository();
 
 const availabilityService = new AvailabilityService(
     availabilityRepository,
