@@ -28,7 +28,7 @@ const userSchema = {
 
 class UserModel extends Model {
     static associate(models) {
-        this.hasMany(models.AvailabilityModel, {
+        this.hasMany(models.BookingModel, {
             foreignKey: 'userId',
             as: 'availabilities',
         });

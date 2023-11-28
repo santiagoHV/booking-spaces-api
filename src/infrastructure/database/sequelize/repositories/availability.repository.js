@@ -1,3 +1,5 @@
+const { parse } = require('dotenv')
+const boom = require('@hapi/boom')
 const Availability = require('../../../../domain/entities/availability.entity')
 const { AvailabilityModel } = require('../models/availability.model')
 
@@ -5,6 +7,8 @@ class AvailabilityRepository {
     constructor() {}
 
     async create(availability) {
+        availability.resourceId = parseInt(availability.resourceId)
+        console.log(availability)
         const newAvailability = await AvailabilityModel.create(availability)
         return new Availability(newAvailability)
     }
@@ -39,13 +43,13 @@ class AvailabilityRepository {
     }
 
     async findByResourceIdAndDay(resourceId, day) {
-        const availability = await AvailabilityModel.findOne({
+        const availabilities = await AvailabilityModel.findAll({
             where: {
                 resourceId: resourceId,
                 day: day
             }
         })
-        return new Availability(availability)
+        return availabilities.map(availability => new Availability(availability))
     }
 }
 

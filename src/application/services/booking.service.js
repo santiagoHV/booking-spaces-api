@@ -14,35 +14,35 @@ class BookingService {
     }
 
     createBooking = async(bookingData) => {
-            const isAValidBlock = await this.availabilityService.isAValidBlock(
-                bookingData.startTime,
-                bookingData.endTime,
-                bookingData.date.getDay(),
-                bookingData.resourceId
-            )
+        console.log(bookingData)
+        const isAValidBlock = await this.availabilityService.isAValidBlock(
+            bookingData.startTime,
+            bookingData.endTime,
+            bookingData.date.getDay(),
+            bookingData.resourceId
+        )
+        if (!isAValidBlock) {
+            throw boom.badRequest('Invalid block')
+        }
+        console.log('isAValidBlock')
+        const isAvaliable = await this.isResourceAvaliable(
+            bookingData.resourceId,
+            bookingData.date,
+            bookingData.startTime,
+            bookingData.endTime)
 
-            if (!isAValidBlock) {
-                throw boom.badRequest('Invalid block')
-            }
+        if (!isAvaliable) {
+            throw boom.badRequest('Resource not available')
+        }
+        console.log('isAvaliable')
+        const booking = new Booking({
+            ...bookingData,
+            status: 'active',
+            resourceId: parseInt(bookingData.resourceId),
+            userId: parseInt(bookingData.userId),
+        })
 
-            const isAvaliable = await this.isResourceAvaliable(
-                bookingData.resourceId,
-                bookingData.date,
-                bookingData.startTime,
-                bookingData.endTime)
-
-            if (!isAvaliable) {
-                throw boom.badRequest('Resource not available')
-            }
-
-            const booking = new Booking({
-                ...bookingData,
-                status: 'active',
-                resourceId: parseInt(bookingData.resourceId),
-                userId: parseInt(bookingData.userId),
-            })
-
-            return await this.bookingRepository.create(booking)
+        return await this.bookingRepository.create(booking)
     }
 
     async getBookingById(bookingId) {

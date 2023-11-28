@@ -31,12 +31,16 @@ class BookingRepository {
     }
 
     async findByResourceIdAndDate(resourceId, date) {
+        console.log("llega hasta el metodo")
+        console.log(resourceId)
+        console.log(date)
         const bookings = await BookingModel.findAll({
             where: {
                 resourceId: resourceId,
                 date: date
             }
         })
+        console.log("pasa el query")
         return bookings.map(booking => new Booking(booking))
     }
 }

@@ -31,7 +31,7 @@ const bookingSchema = {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
-    resourceID: {
+    resourceId: {
         type: DataTypes.INTEGER,
         allowNull: false,
     },
@@ -55,6 +55,7 @@ class BookingModel extends Model {
             sequelize,
             tableName: BOOKING_TABLE,
             modelName: 'BookingModel',
+            timestamps: false,
         };
     }
 }

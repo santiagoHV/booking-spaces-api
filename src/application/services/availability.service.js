@@ -2,25 +2,27 @@ const boom = require('@hapi/boom')
 
 class AvailabilityService {
     constructor(
-        availabilityRepository, 
-        bookingRepository, 
+        availabilityRepository,
+        bookingRepository,
         resourceRepository,
-        ) {
+    ) {
         this.availabilityRepository = availabilityRepository
         this.bookingRepository = bookingRepository
         this.resourceRepository = resourceRepository
     }
 
-    isAValidBlock = async (startTime, endTime, day, id) => {
-        if(startTime >= endTime) {
+    isAValidBlock = async(startTime, endTime, day, id) => {
+        if (startTime >= endTime) {
             throw boom.badRequest('Start time must be before end time')
         }
 
         const availabilityBlocks = await this.availabilityRepository.findByResourceIdAndDay(id, day)
 
-        if(availabilityBlocks.length === 0) {
+        if (availabilityBlocks.length === 0) {
             throw boom.badRequest('No availability blocks found for this day')
         }
+
+        console.log(availabilityBlocks)
 
         return availabilityBlocks.some(availabilityBlock => {
             return availabilityBlock.startTime === startTime && availabilityBlock.endTime === endTime

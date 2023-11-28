@@ -7,7 +7,7 @@ class BookingController {
 
     createBooking = async(req, res, next) => {
         try {
-            const { startTime, endTime, date, observations, userId, resourceId } = req.body
+            const { startTime, endTime, date, observations, resourceId } = req.body
 
             const booking = await this.bookingService.createBooking({
                 startTime,
@@ -32,7 +32,7 @@ class BookingController {
         }
     }
 
-    closeBooking = async(req, res) =>{
+    closeBooking = async(req, res) => {
         try {
             const booking = await this.bookingService.closeBooking(req.params.id)
             res.status(200).json(booking)

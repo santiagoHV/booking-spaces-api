@@ -1,45 +1,45 @@
 class ResourceService {
     constructor(resourceRepository,
-        availabilityRepository, 
+        availabilityRepository,
         bookingRepository = null,
         availabilityService = null
-        ) {
+    ) {
         this.resourceRepository = resourceRepository;
         this.availabilityRepository = availabilityRepository;
         this.bookingRepository = bookingRepository;
         this.availabilityService = availabilityService;
     }
 
-    getAll = async () => {
+    getAll = async() => {
         return await this.resourceRepository.getAll();
     }
 
-    get = async (id) => {
+    get = async(id) => {
         return await this.resourceRepository.get(id);
     }
 
-    create = async (resource) => {
+    create = async(resource) => {
         return await this.resourceRepository.create(resource);
     }
 
-    update = async (id, resource) => {
+    update = async(id, resource) => {
         return await this.resourceRepository.update(id, resource);
     }
 
-    delete = async (id) => {
+    delete = async(id) => {
         return await this.resourceRepository.delete(id);
     }
 
-    createAvailability = async (id, availability) => {
-        const newAvailability = await this.availabilityRepository.create({...availability, resourceId: id})
+    createAvailability = async(id, availability) => {
+        const newAvailability = await this.availabilityRepository.create({...availability, resourceId: id })
         return newAvailability
     }
 
-    createAvailabilityBulk = async (id, availabilities) => {
+    createAvailabilityBulk = async(id, availabilities) => {
         const resource = await this.resourceRepository.get(`${id}`);
 
         const newAvailabilities = Promise.all(availabilities.map(async availability => {
-            const newAvailability = await this.availabilityRepository.create({...availability, resourceId: id})
+            const newAvailability = await this.availabilityRepository.create({...availability, resourceId: id })
             return newAvailability
         }));
 
@@ -49,21 +49,21 @@ class ResourceService {
         }
     }
 
-    updateAvailability = async (id, availability) => {
+    updateAvailability = async(id, availability) => {
         return await this.availabilityRepository.update(id, availability);
     }
 
-    deleteAvailability = async (id) => {
+    deleteAvailability = async(id) => {
         return await this.availabilityRepository.delete(id);
     }
 
-    getAvailabilityByDate = async (id, date) => {
+    getAvailabilityByDate = async(id, date) => {
         const resource = await this.resourceRepository.get(id);
         const day = date.getDay();
         const availabilityBlocks = await this.availabilityRepository.findByResourceIdAndDay(id, day);
-        
+
         const bookingsInDay = await this.bookingRepository.findByResourceIdAndDate(id, date);
-    
+
         const dayAvailabilities = availabilityBlocks.map(availability => {
             const isAvailable = this.availabilityService.isBlockAvailableInDay(availability, bookingsInDay)
             return {
@@ -71,8 +71,8 @@ class ResourceService {
                 isAvailable
             }
         })
-    
-        
+
+
 
         return {
             ...resource,
@@ -80,12 +80,12 @@ class ResourceService {
         }
     }
 
-    getBookingsByDate = async (id, date) => {
+    getBookingsByDate = async(id, date) => {
         const bookings = await this.bookingRepository.findByResourceIdAndDate(id, date);
         return bookings;
     }
 
-    
+
 }
 
 module.exports = ResourceService;

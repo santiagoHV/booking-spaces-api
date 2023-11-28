@@ -1,4 +1,4 @@
-const {DataTypes, Model} = require('sequelize')
+const { DataTypes, Model } = require('sequelize')
 
 const AVAILABILITY_TABLE = 'availabilities'
 
@@ -39,8 +39,9 @@ class AvailabilityModel extends Model {
             sequelize,
             tableName: AVAILABILITY_TABLE,
             modelName: 'AvailabilityModel',
+            timestamps: false,
         }
     }
 }
 
-module.exports = {AVAILABILITY_TABLE, availabilitySchema, AvailabilityModel}
+module.exports = { AVAILABILITY_TABLE, availabilitySchema, AvailabilityModel }

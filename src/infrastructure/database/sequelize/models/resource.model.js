@@ -1,4 +1,4 @@
-const {DataTypes, Model} = require('sequelize')
+const { DataTypes, Model } = require('sequelize')
 
 const RESOURCE_TABLE = 'resources'
 
@@ -22,10 +22,9 @@ const resourceSchema = {
         type: DataTypes.INTEGER,
         defaultValue: 1,
     },
-    status: {
-        type: DataTypes.STRING,
-        defaultValue: 'active',
-    },
+    details: {
+        type: DataTypes.STRING
+    }
 }
 
 class ResourceModel extends Model {
@@ -46,8 +45,9 @@ class ResourceModel extends Model {
             sequelize,
             tableName: RESOURCE_TABLE,
             modelName: 'ResourceModel',
+            timestamps: false,
         }
     }
 }
 
-module.exports = {RESOURCE_TABLE, resourceSchema, ResourceModel}
+module.exports = { RESOURCE_TABLE, resourceSchema, ResourceModel }
