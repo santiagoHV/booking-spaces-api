@@ -80,6 +80,11 @@ class ResourceService {
         }
     }
 
+    getBookingsByDate = async (id, date) => {
+        const bookings = await this.bookingRepository.findByResourceIdAndDate(id, date);
+        return bookings;
+    }
+
     
 }
 

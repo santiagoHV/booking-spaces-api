@@ -119,6 +119,18 @@ class ResourceController {
             return res.status(500).json(error);
         }
     }
+
+    getBookingsByDate = async (req, res) => {
+        try {
+            let { id, date } = req.params;
+
+            const newDate = new Date(date);
+            const bookings = await this.resourceService.getBookingsByDate(id, newDate);
+            return res.status(200).json(bookings);
+        } catch (error) {
+            return res.status(500).json(error);
+        }
+    }
 }
 
 module.exports = ResourceController;

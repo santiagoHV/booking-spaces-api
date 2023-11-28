@@ -55,7 +55,7 @@ class BookingService {
 
     async closeBooking(bookingId) {
         try {
-            return ''
+            return await this.bookingRepository.closeBooking(bookingId)
         } catch (error) {
             throw error
         }

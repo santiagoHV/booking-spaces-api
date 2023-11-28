@@ -33,6 +33,13 @@ class UserRepositoryMock {
         return this.bookings.filter(booking => booking.userId === intId)
     }
 
+    async closeBooking(bookingId) {
+        const intId = parseInt(bookingId)
+        const booking = this.bookings.find(booking => booking.id === intId)
+        booking.status = 'closed'
+        return booking
+    }
+
     findByResourceIdAndDate = async(resourceId, date) => {
         const intId = parseInt(resourceId)
         const dateToCompare = date

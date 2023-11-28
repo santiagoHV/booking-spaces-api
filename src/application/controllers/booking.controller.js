@@ -14,7 +14,7 @@ class BookingController {
                 endTime,
                 date: new Date(date),
                 observations,
-                userId,
+                userId: req.user.id,
                 resourceId
             })
             res.status(201).json(booking)
@@ -32,7 +32,7 @@ class BookingController {
         }
     }
 
-    async closeBooking(req, res) {
+    closeBooking = async(req, res) =>{
         try {
             const booking = await this.bookingService.closeBooking(req.params.id)
             res.status(200).json(booking)
