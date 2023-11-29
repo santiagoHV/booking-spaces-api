@@ -12,7 +12,7 @@ class AvailabilityService {
     }
 
     isAValidBlock = async(startTime, endTime, day, id) => {
-        if (startTime >= endTime) {
+        if (parseInt(startTime.split(":")[0]) >= parseInt(endTime.split(":")[0])) {
             throw boom.badRequest('Start time must be before end time')
         }
 
@@ -21,8 +21,6 @@ class AvailabilityService {
         if (availabilityBlocks.length === 0) {
             throw boom.badRequest('No availability blocks found for this day')
         }
-
-        console.log(availabilityBlocks)
 
         return availabilityBlocks.some(availabilityBlock => {
             return availabilityBlock.startTime === startTime && availabilityBlock.endTime === endTime

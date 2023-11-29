@@ -62,6 +62,8 @@ class ResourceService {
         const day = date.getDay();
         const availabilityBlocks = await this.availabilityRepository.findByResourceIdAndDay(id, day);
 
+        console.log(availabilityBlocks)
+
         const bookingsInDay = await this.bookingRepository.findByResourceIdAndDate(id, date);
 
         const dayAvailabilities = availabilityBlocks.map(availability => {
@@ -75,8 +77,8 @@ class ResourceService {
 
 
         return {
-            ...resource,
-            dayAvailabilities: dayAvailabilities,
+            ...resource.resource,
+            dateAvailabilities: dayAvailabilities,
         }
     }
 

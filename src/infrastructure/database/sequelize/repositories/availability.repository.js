@@ -8,7 +8,6 @@ class AvailabilityRepository {
 
     async create(availability) {
         availability.resourceId = parseInt(availability.resourceId)
-        console.log(availability)
         const newAvailability = await AvailabilityModel.create(availability)
         return new Availability(newAvailability)
     }
@@ -43,6 +42,7 @@ class AvailabilityRepository {
     }
 
     async findByResourceIdAndDay(resourceId, day) {
+        console.log("day",day)
         const availabilities = await AvailabilityModel.findAll({
             where: {
                 resourceId: resourceId,

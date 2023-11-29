@@ -1,5 +1,6 @@
 const Resource = require('../../../../domain/entities/resource.entity')
 const { ResourceModel } = require('../models/resource.model')
+const { AvailabilityModel } = require('../models/availability.model')
 
 class ResourceRepository {
     constructor() {}
@@ -10,13 +11,21 @@ class ResourceRepository {
     }
 
     async get(id) {
-        const resource = await ResourceModel.findByPk(id)
+        const resource = await ResourceModel.findByPk(id, {
+            include: [{
+                model: AvailabilityModel,
+                as: 'availabilities'
+            }]
+        })
 
         if (!resource) {
             return null
         }
 
-        return new Resource(resource)
+        return {
+            resource: new Resource(resource),
+            availabilities: resource.availabilities.map(availability => availability.toJSON())
+        }
     }
 
     async create(resource) {
