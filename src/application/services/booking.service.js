@@ -24,7 +24,7 @@ class BookingService {
         if (!isAValidBlock) {
             throw boom.badRequest('Invalid block')
         }
-        console.log('isAValidBlock')
+        
         const isAvaliable = await this.isResourceAvaliable(
             bookingData.resourceId,
             bookingData.date,
@@ -34,7 +34,7 @@ class BookingService {
         if (!isAvaliable) {
             throw boom.badRequest('Resource not available')
         }
-        console.log('isAvaliable')
+        
         const booking = new Booking({
             ...bookingData,
             status: 'active',

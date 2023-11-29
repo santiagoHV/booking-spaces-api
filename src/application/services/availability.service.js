@@ -28,6 +28,8 @@ class AvailabilityService {
     }
 
     isBlockAvailableInDay = (availabilityBlock, bookingsInDay) => {
+        console.log(bookingsInDay)
+
         return bookingsInDay.every(booking => {
             const bookingStart = booking.startTime
             const bookingEnd = booking.endTime
