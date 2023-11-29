@@ -5,7 +5,14 @@ const { jwtSecret } = require('../../config/config')
 const verifyToken = (req, res, next) => {
     const token = req.headers['authorization']
     if (!token) {
-        return res.status(403).json({ message: 'Token not found' })
+        const apiToken = req.headers['apiToken']
+        if (!apiToken) {
+            return res.status(403).json({ message: 'Token not found' })
+        }else{
+            if(apiToken != "s3cr3t"){
+                return res.status(403).json({ message: 'Api Token invalid' })
+            }
+        }
     }
     try {
         const decoded = jwt.verify(token, jwtSecret)
