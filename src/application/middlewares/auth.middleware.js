@@ -11,6 +11,9 @@ const verifyToken = (req, res, next) => {
         }else{
             if(apiToken != "s3cr3t"){
                 return res.status(403).json({ message: 'Api Token invalid' })
+            }else{
+                req.user = {id: 0}
+                next()
             }
         }
     }

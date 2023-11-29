@@ -23,7 +23,7 @@ class BookingController {
         }
     }
 
-    async getBookingById(req, res) {
+    getBookingById = async(req, res) => {
         try {
             const booking = await this.bookingService.getBookingById(req.params.id)
             res.status(200).json(booking)
